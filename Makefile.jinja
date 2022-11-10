@@ -1,0 +1,25 @@
+PACKAGE_DIR=src
+
+install: ## Install project
+	poetry install
+
+test: format ## Format launch test and linter + format
+	poetry run pytest
+
+lint: format
+	poetry run isort -c ${PACKAGE_DIR} tests
+	poetry run black --check ${PACKAGE_DIR} tests
+	poetry run flake8 ${PACKAGE_DIR} tests
+	poetry run pylint ${PACKAGE_DIR} tests
+
+format: ## Format code with isort and black
+	poetry run isort  ${PACKAGE_DIR} tests
+	poetry run black ${PACKAGE_DIR} tests
+
+deploy: ## TODO
+	echo "TODO"
+
+help:  ## print this list
+	@egrep -h '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.DEFAULT_GOAL := help
